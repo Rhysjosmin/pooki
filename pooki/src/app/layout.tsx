@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +16,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={"bg-neutral-950"}>
+        {children}
+        <Image
+          className="w-full absolute inset-0"
+          unoptimized
+          alt=""
+          height={500}
+          width={500}
+          src={"blk_noise.png"}
+        />
+      </body>
     </html>
   );
 }
