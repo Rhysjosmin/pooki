@@ -72,6 +72,7 @@ export default function Page({ params }: { params: { id: string } }) {
 						>
 							{currentPookiData["name"]}
 						</h1>
+						
 						<div className=" flex gap-2">
 							<h1 className={cn(" text-white", rubix.className)}>
 								{Number.parseFloat(currentPookiData["height"]) * 10} cm
