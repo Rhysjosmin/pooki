@@ -16,17 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={"bg-neutral-950"}>
-        {children}
-        <Image
-          className="w-full absolute inset-0"
-          unoptimized
-          alt=""
-          height={500}
-          width={500}
-          src={"blk_noise.png"}
-        />
-      </body>
+      <body className="bg-neutral-800 text-white">{children}</body>
     </html>
   );
 }
