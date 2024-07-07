@@ -15,15 +15,23 @@ export function Card(props: CardProps) {
   }, [props.pokemonD]);
   const pookieData = props.pokemonD;
   if (pookieData == null || pookieData === undefined) {
-    return <></>;
+    return (
+      <div
+        {...props}
+        className={cn(
+          "w-96 shadow-2xl p-4 h-auto bg-[#2B2B2B] border-dashed border border-white/10 aspect-[9/12] rounded-xl"
+        )}
+      />
+    );
   }
   return (
     <div
       {...props}
       className={cn(
-        "w-96 shadow-2xl p-4 h-auto bg-[#2B2B2B] border-dashed border border-white/10 aspect-[9/12] rounded-xl"
+        "w-96 shadow-2xl p-4 h-auto bg-[#252525] border-dashed border border-white/20 aspect-[9/12] overflow-hidden rounded-xl"
       )}
     >
+      <Image className="absolute inset-0 h-full object-cover bg-blend-overlay opacity-10 rounded-xl" alt="" src={'/noise2.png'} height={500} width={500}/>
       <h1 className={cn(space_mono.className, "absolute text")}>
         #{pookieData.id.toString().padStart(5, "0")}
       </h1>
@@ -68,7 +76,7 @@ export function Card(props: CardProps) {
         </div>
         <div className="bottom-0  w-full mt-4">
           {pookieData.stats.map(({ stat, base_stat }) => (
-            <div className="mb-1" key={stat.name}>
+            <div className="mb-1 relative" key={stat.name}>
               <p
                 className={cn(
                   "lowercase text-sm text-white/60 mt-2 mb-0.5",
@@ -77,7 +85,15 @@ export function Card(props: CardProps) {
               >
                 {stat.name}
               </p>
-              <div className="h-0.5  w-full bg-white/5">
+              <p
+                className={cn(
+                  "lowercase absolute top-0 right-0 text-xs text-white/20 mt-0.5 ",
+                  space_grotesk.className
+                )}
+              >
+                {base_stat}
+              </p>
+              <div className="h-0.5  w-full bg-white/5 ">
                 <div
                   className="bg-gradient-to-r duration-700 transition-all from-neutral-500 via-neutral-300 via-[80%] to-neutral-100 h-full"
                   style={{ width: `${(base_stat / 255) * 100}%` }}

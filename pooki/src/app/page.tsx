@@ -1,5 +1,6 @@
 "use client";
 import { Card } from "@/components/Card";
+import { Cursor } from "@/components/cursor";
 import { space_grotesk, space_mono } from "@/components/fonts";
 import { SearchBar } from "@/components/search";
 import { usePokiStore } from "@/components/state";
@@ -20,6 +21,7 @@ export default function Page() {
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         setPokemons((prevPokemons: any) => ({
           ...prevPokemons,
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           [d.id]: { ...(d as any) },
         }));
       });
@@ -42,39 +44,29 @@ export default function Page() {
       updateDB(id + 1);
       updateDB(id + 2);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-  useEffect(() => {
-    console.log(pokemons);
-  }, [pokemons]);
+ 
 
   if (pokemons == null) {
-    return <></>;
+    return <>sdfdsf</>;
   }
   if (Object.keys(pokemons).length < 3) {
-    return <></>;
+    return <>asdfs</>;
   }
   return (
     <div className="flex h-screen items-center justify-center">
+      <Cursor/>
       <SearchBar />
       <h1
         className={cn(
           space_grotesk.className,
-          "absolute top-2 left-2 opacity-20 font-black"
+          "absolute top-2 left-2 opacity-20 font-black",
         )}
       >
         #{id.toString().padStart(5, "0")}
       </h1>
-      <p
-        className={cn(
-          space_mono.className,
-          "absolute bottom-2 left-2 text-xs text-white/40"
-        )}
-      >
-        <span className="inline-block px-1 py-0.5 bg-white/10 rounded">
-          ctrl + shift + p
-        </span>{" "}
-        to open search
-      </p>
+
       <div className=" absolute inset-0  z-[1000] grid grid-cols-2">
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <div
@@ -115,8 +107,8 @@ export default function Page() {
                   translateX: -300,
                   rotateZ: -6,
                   rotateY: -10,
-                  opacity: 0.3,
-                  filter: "blur(5px)",
+                  opacity: 0.5,
+                  filter: "blur(5px) brightness(0.4)",
                   scale: 0.8,
                 }}
                 exit={{
@@ -133,7 +125,7 @@ export default function Page() {
 
               <motion.div
                 transition={{ duration: 0.2 }}
-                className="absolute z-10"
+                className="absolute z-[100]"
                 initial={{
                   translateY: 60,
                   translateX: 300,
@@ -157,8 +149,8 @@ export default function Page() {
                   translateX: -300,
                   rotateZ: -6,
                   rotateY: -10,
-                  opacity: 0.3,
-                  filter: "blur(5px)",
+                  opacity: 0.5,
+                  filter: "blur(5px) brightness(0.4)",
                   scale: 0.8,
                 }}
               >
@@ -182,8 +174,8 @@ export default function Page() {
                   translateX: 300,
                   rotateZ: 6,
                   rotateY: 10,
-                  opacity: 0.3,
-                  filter: "blur(2px)",
+                  opacity: 0.5,
+                  filter: "blur(5px) brightness(0.4)",
                   scale: 0.8,
                 }}
                 exit={{
