@@ -46,13 +46,13 @@ export default function Page() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
- 
+
 
   if (pokemons == null) {
-    return <>sdfdsf</>;
+    return <></>;
   }
   if (Object.keys(pokemons).length < 3) {
-    return <>asdfs</>;
+    return <></>;
   }
   return (
     <div className="flex h-screen items-center justify-center">
