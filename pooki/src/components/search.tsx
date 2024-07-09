@@ -23,7 +23,7 @@ export function SearchBar() {
   }, []);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.shiftKey && event.key === "P") {
+      if (event.ctrlKey && event.shiftKey && event.key === "S") {
         setSearchActive(true);
       } else if (event.key === "Escape") {
         setSearchActive(false);
@@ -50,7 +50,7 @@ export function SearchBar() {
         )}
       >
         <span className="inline-block px-1 py-0.5 bg-white/10 rounded">
-          ctrl + shift + p
+          ctrl + shift + s
         </span>{" "}
         to open search
       </p>
