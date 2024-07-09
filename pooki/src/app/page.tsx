@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const { id, setID } = usePokiStore();
+  const [direction, setDirection] = useState<"l" | "r">("l");
   const [pokemons, setPokemons] = useState<{
     [id: number]: PokemonDType;
   } | null>(null);
@@ -44,9 +45,8 @@ export default function Page() {
       updateDB(id + 1);
       updateDB(id + 2);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
 
   if (pokemons == null) {
     return <></>;
@@ -56,7 +56,7 @@ export default function Page() {
   }
   return (
     <div className="flex h-screen items-center justify-center">
-      <Cursor/>
+      <Cursor />
       <SearchBar />
       <h1
         className={cn(
@@ -70,12 +70,18 @@ export default function Page() {
       <div className=" absolute inset-0  z-[1000] grid grid-cols-2">
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <div
-          onClick={() => setID(Math.max(id - 1, 1))}
+          onClick={() => {
+            setDirection("l");
+            setID(Math.max(id - 1, 1));
+          }}
           className="w-full h-full bg-white/10 "
         />
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <div
-          onClick={() => setID(Math.min(id + 1, 1000))}
+          onClick={() => {
+            setDirection("r");
+            setID(Math.min(id + 1, 1000));
+          }}
           className="w-full h-full bg-white/10 "
         />
       </div>
@@ -93,15 +99,26 @@ export default function Page() {
                 transition={{ duration: 0.2 }}
                 style={{ transformStyle: "preserve-3d" }}
                 className="absolute "
-                initial={{
-                  opacity: 1,
-                  translateY: -10,
-                  translateX: 0,
-                  rotateZ: 0,
-                  rotateY: 0,
-                  filter: "blur(0px)",
-                  scale: 1,
-                }}
+                initial={
+                  direction === "r"
+                    ? {
+                        opacity: 1,
+                        translateY: -10,
+                        translateX: 0,
+                        rotateZ: 0,
+                        rotateY: 0,
+                        filter: "blur(0px)",
+                        scale: 1,
+                      }
+                    : {
+                        translateY: 60,
+                        translateX: -600,
+                        rotateZ: -12,
+                        rotateY: -30,
+                        opacity: 0,
+                        filter: "blur(8px)",
+                      }
+                }
                 animate={{
                   translateY: 60,
                   translateX: -300,
@@ -126,15 +143,27 @@ export default function Page() {
               <motion.div
                 transition={{ duration: 0.2 }}
                 className="absolute z-[100]"
-                initial={{
-                  translateY: 60,
-                  translateX: 300,
-                  rotateZ: 6,
-                  rotateY: 10,
-                  opacity: 0.3,
-                  filter: "blur(2px)",
-                  scale: 0.8,
-                }}
+                initial={
+                  direction === "r"
+                    ? {
+                        translateY: 60,
+                        translateX: 300,
+                        rotateZ: 6,
+                        rotateY: 10,
+                        opacity: 0.3,
+                        filter: "blur(2px)",
+                        scale: 0.8,
+                      }
+                    : {
+                        translateY: 60,
+                        translateX: -300,
+                        rotateZ: -6,
+                        rotateY: -10,
+                        opacity: 0.5,
+                        filter: "blur(5px) brightness(0.4)",
+                        scale: 0.8,
+                      }
+                }
                 animate={{
                   opacity: 1,
                   translateY: -10,
@@ -144,15 +173,27 @@ export default function Page() {
                   filter: "blur(0px)",
                   scale: 1,
                 }}
-                exit={{
-                  translateY: 60,
-                  translateX: -300,
-                  rotateZ: -6,
-                  rotateY: -10,
-                  opacity: 0.5,
-                  filter: "blur(5px) brightness(0.4)",
-                  scale: 0.8,
-                }}
+                exit={
+                  direction === "l"
+                    ? {
+                        translateY: 60,
+                        translateX: 300,
+                        rotateZ: 6,
+                        rotateY: 10,
+                        opacity: 0.3,
+                        filter: "blur(2px)",
+                        scale: 0.8,
+                      }
+                    : {
+                        translateY: 60,
+                        translateX: -300,
+                        rotateZ: -6,
+                        rotateY: -10,
+                        opacity: 0.5,
+                        filter: "blur(5px) brightness(0.4)",
+                        scale: 0.8,
+                      }
+                }
               >
                 <Card pokemonD={pokemons[Number.parseInt(x)]} />
               </motion.div>
@@ -161,14 +202,26 @@ export default function Page() {
                 transition={{ duration: 0.2 }}
                 style={{ transformStyle: "preserve-3d" }}
                 className="absolute "
-                initial={{
-                  opacity: 0,
-                  translateY: 100,
-                  translateX: 700,
-                  rotateY: 10,
-                  rotateZ: 80,
-                  scale: 1,
-                }}
+                initial={
+                  direction === "l"
+                    ? {
+                        opacity: 1,
+                        translateY: -10,
+                        translateX: 0,
+                        rotateZ: 0,
+                        rotateY: 0,
+                        filter: "blur(0px)",
+                        scale: 1,
+                      }
+                    : {
+                        opacity: 0,
+                        translateY: 100,
+                        translateX: 700,
+                        rotateY: 10,
+                        rotateZ: 80,
+                        scale: 1,
+                      }
+                }
                 animate={{
                   translateY: 60,
                   translateX: 300,
@@ -178,15 +231,26 @@ export default function Page() {
                   filter: "blur(5px) brightness(0.4)",
                   scale: 0.8,
                 }}
-                exit={{
-                  opacity: 1,
-                  translateY: -10,
-                  translateX: 0,
-                  rotateZ: 0,
-                  rotateY: 0,
-                  filter: "blur(0px)",
-                  scale: 1,
-                }}
+                exit={
+                  direction === "l"
+                    ? {
+                        opacity: 0,
+                        translateY: 100,
+                        translateX: 700,
+                        rotateY: 10,
+                        rotateZ: 80,
+                        scale: 1,
+                      }
+                    : {
+                        opacity: 1,
+                        translateY: -10,
+                        translateX: 0,
+                        rotateZ: 0,
+                        rotateY: 0,
+                        filter: "blur(0px)",
+                        scale: 1,
+                      }
+                }
               >
                 <Card pokemonD={pokemons[Number.parseInt(x) + 1]} />
               </motion.div>
