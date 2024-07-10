@@ -84,7 +84,8 @@ export function SearchBar() {
           className="w-full flex p-1 flex-wrap gap-1 rounded-b-xl  bg-neutral-800"
         >
           <div className={cn(rubix.className, "  p-2  text-white/30")}>
-            add # before to search by id
+            <span className="text-orange-200/40 font-medium"> tip:</span> add #
+            before to search by id
           </div>
           <Results data={data} search={searchField} />
         </div>
