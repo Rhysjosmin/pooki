@@ -83,9 +83,20 @@ export function SearchBar() {
           style={{ cursor: searchActive ? "default" : "none" }}
           className="w-full flex p-1 flex-wrap gap-1 rounded-b-xl  bg-neutral-800"
         >
-          <div className={cn(rubix.className, "  p-2  text-white/30")}>
+          <div
+            style={{ cursor: searchActive ? "default" : "none" }}
+            className={cn(rubix.className, "  p-2  text-white/30")}
+          >
             <span className="text-orange-200/40 font-medium"> tip:</span> add #
             before to search by id
+            <span
+              style={{ cursor: searchActive ? "default" : "none" }}
+              className="pl-1 "
+            >
+              eg: single pokemon with{" "}
+              <span className="text-green-200/40">`#2` </span>or a range of
+              pokemons with <span className="text-green-200/40">`#2-5`</span>
+            </span>
           </div>
           <Results data={data} search={searchField} />
         </div>
@@ -105,7 +116,12 @@ function Results({ data, search }: { data: any; search: string }) {
 
         .filter((x: { name: string; url: string }, i: number) => {
           if (search.slice(0, 1) === "#") {
-            return i + 1 === parseInt(search.replace("#", ""));
+            const mainStr = search.replace("#", "");
+            if (search.includes("-")) {
+              const nums = mainStr.split("-").map((y) => parseInt(y));
+              return i + 2 > nums[0] && i < nums[1];
+            }
+            return i + 1 === parseInt(mainStr);
           }
           return x.name.includes(search);
         })

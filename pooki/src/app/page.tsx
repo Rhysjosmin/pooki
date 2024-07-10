@@ -29,7 +29,7 @@ export default function Page() {
   };
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    updateDB(1025);
+    // updateDB(1025);
     updateDB(1);
     updateDB(2);
     updateDB(3);
@@ -40,18 +40,18 @@ export default function Page() {
     if (pokemons === null) {
       return;
     }
-    if (Object.keys(pokemons).length > 3) {
-      // updateDB(id - 1);
-      // updateDB(id);
-      // updateDB(id + 1);
+    // if (Object.keys(pokemons).length > 3) {
+    // updateDB(id - 1);
+    // updateDB(id);
+    // updateDB(id + 1);
 
-      [-1, 0, 1].forEach((x) => {
-        if (!Object.keys(pokemons).includes((id + x).toString())) {
-          updateDB(id + x);
-          console.log("updated ", id + x);
-        }
-      });
-    }
+    [-1, 0, 1].forEach((x) => {
+      if (!Object.keys(pokemons).includes((id + x).toString())) {
+        updateDB(id + x);
+        console.log("updated ", id + x);
+      }
+    });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
