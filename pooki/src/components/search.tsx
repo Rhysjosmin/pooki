@@ -59,24 +59,33 @@ export function SearchBar() {
           pointerEvents: searchActive ? "auto" : "none",
           opacity: searchActive ? 1 : 0,
         }}
-        className="inset-0 flex absolute transition-all   flex-col items-center p-12 z-[2000] top-0"
+        className="inset-0  flex absolute transition-all   flex-col items-center p-12 z-[2000] top-0"
       >
         <div
           onClick={() => setSearchActive(false)}
-          style={{ backdropFilter: `blur(${searchActive ? 3 : 0}px)` }}
+          style={{
+            backdropFilter: `blur(${searchActive ? 3 : 0}px)`,
+            cursor: searchActive ? "default" : "none",
+          }}
           className="bg-neutral-950/80  transition-all  inset-0 absolute -z-10"
         />
         <Input
           onChange={(e) => setSearchField(e.target.value)}
           ref={inputRef}
-          style={{}}
+          style={{ cursor: searchActive ? "text" : "none" }}
           className={cn(
             rubix.className,
             "  border-white/10  bg-neutral-800 rounded-t-xl border-dashed   text-center p-4 text-lg h-12 text-white/70",
           )}
           placeholder="Search"
         />
-        <div className="w-full flex p-1 flex-wrap gap-1 bg-neutral-900 rounded-b-xl  bg-neutral-800">
+        <div
+          style={{ cursor: searchActive ? "default" : "none" }}
+          className="w-full flex p-1 flex-wrap gap-1 rounded-b-xl  bg-neutral-800"
+        >
+          <div className={cn(rubix.className, "  p-2  text-white/30")}>
+            add # before to search by id
+          </div>
           <Results data={data} search={searchField} />
         </div>
       </div>
@@ -93,19 +102,24 @@ function Results({ data, search }: { data: any; search: string }) {
     <>
       {data["results"]
 
-        .filter((x: { name: string; url: string }) => x.name.includes(search))
+        .filter((x: { name: string; url: string }, i: number) => {
+          if (search.slice(0, 1) === "#") {
+            return i + 1 === parseInt(search.replace("#", ""));
+          }
+          return x.name.includes(search);
+        })
         .map((x: { name: string; url: string }) => {
           const id = parseInt(x.url.split("/")[x.url.split("/").length - 2]);
           return (
             <Button
-              className="p-2 border-dashed border border-white/10 hover:border-orange-600/30 bg-neutral-700/50 hover:bg-neutral-600 rounded-xl"
+              className="p-2 border-dashed capitalize border border-white/10 hover:border-orange-600/30 bg-neutral-700/50 hover:bg-neutral-600 rounded-xl"
               key={x.name}
               onClick={() => {
                 setID(id);
                 setSearchActive(false);
               }}
             >
-              {x.name}
+              {x.name.replace("-", " ")}
             </Button>
           );
         })}

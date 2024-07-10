@@ -41,9 +41,16 @@ export default function Page() {
       return;
     }
     if (Object.keys(pokemons).length > 3) {
-      updateDB(id);
-      updateDB(id + 1);
-      updateDB(id + 2);
+      // updateDB(id - 1);
+      // updateDB(id);
+      // updateDB(id + 1);
+
+      [-1, 0, 1].forEach((x) => {
+        if (!Object.keys(pokemons).includes((id + x).toString())) {
+          updateDB(id + x);
+          console.log("updated ", id + x);
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -87,16 +94,14 @@ export default function Page() {
       </div>
       <AnimatePresence mode="sync">
         {Object.keys(pokemons)
-          .sort((a, s) => Number.parseInt(a) - Number.parseInt(s))
-          .slice(id - 1, id)
-          // .sort((a, b) => a.id - b.id)
+          .filter((key) => Number.parseInt(key) === id)
           .map((x) => (
             <div
               className="top-0 overflow-hidden absolute inset-0 flex items-center justify-center"
               key={x}
             >
               <motion.div
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.1 }}
                 style={{ transformStyle: "preserve-3d" }}
                 className="absolute "
                 initial={
@@ -128,20 +133,32 @@ export default function Page() {
                   filter: "blur(5px) brightness(0.4)",
                   scale: 0.8,
                 }}
-                exit={{
-                  translateY: 60,
-                  translateX: -600,
-                  rotateZ: -12,
-                  rotateY: -30,
-                  opacity: 0,
-                  filter: "blur(8px)",
-                }}
+                exit={
+                  direction == "r"
+                    ? {
+                        translateY: 60,
+                        translateX: -600,
+                        rotateZ: -12,
+                        rotateY: -30,
+                        opacity: 0,
+                        filter: "blur(8px)",
+                      }
+                    : {
+                        opacity: 1,
+                        translateY: -10,
+                        translateX: 0,
+                        rotateZ: 0,
+                        rotateY: 0,
+                        filter: "blur(0px)",
+                        scale: 1,
+                      }
+                }
               >
                 <Card pokemonD={pokemons[Number.parseInt(x) - 1]} />
               </motion.div>
 
               <motion.div
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.1 }}
                 className="absolute z-[100]"
                 initial={
                   direction === "r"
@@ -174,17 +191,8 @@ export default function Page() {
                   scale: 1,
                 }}
                 exit={
-                  direction === "l"
+                  direction === "r"
                     ? {
-                        translateY: 60,
-                        translateX: 300,
-                        rotateZ: 6,
-                        rotateY: 10,
-                        opacity: 0.3,
-                        filter: "blur(2px)",
-                        scale: 0.8,
-                      }
-                    : {
                         translateY: 60,
                         translateX: -300,
                         rotateZ: -6,
@@ -193,13 +201,22 @@ export default function Page() {
                         filter: "blur(5px) brightness(0.4)",
                         scale: 0.8,
                       }
+                    : {
+                        translateY: 60,
+                        translateX: 300,
+                        rotateZ: 6,
+                        rotateY: 10,
+                        opacity: 0.3,
+                        filter: "blur(2px)",
+                        scale: 0.8,
+                      }
                 }
               >
                 <Card pokemonD={pokemons[Number.parseInt(x)]} />
               </motion.div>
 
               <motion.div
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.1 }}
                 style={{ transformStyle: "preserve-3d" }}
                 className="absolute "
                 initial={

@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { MaterialSymbolsArrowCircleRightRounded } from "./icons";
+import { usePokiStore } from "./state";
 
 export function Cursor() {
+  const { searchActive } = usePokiStore();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const [width, setWidth] = useState(0);
@@ -46,6 +48,7 @@ export function Cursor() {
   return (
     <div
       style={{
+        opacity: searchActive ? 0 : 1,
         position: "fixed",
         top: 0,
         left: 0,
@@ -68,7 +71,7 @@ export function Cursor() {
         }}
       >
         <MaterialSymbolsArrowCircleRightRounded
-        className="transition-all duration-300"
+          className="transition-all duration-300"
           style={{ rotate: position.x < width / 2 ? "180deg" : "0deg" }}
         />
       </div>

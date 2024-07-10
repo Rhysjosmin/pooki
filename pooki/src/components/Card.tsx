@@ -1,15 +1,17 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import type React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { PokemonDType } from "./types";
 import { space_grotesk, space_mono } from "./fonts";
 import Link from "next/link";
+import { SvgSpinners180Ring } from "./icons";
 type _Props = React.HTMLProps<HTMLDivElement>;
 interface CardProps extends _Props {
   pokemonD: PokemonDType;
 }
 export function Card(props: CardProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   useEffect(() => {
     console.log(props.pokemonD);
   }, [props.pokemonD]);
@@ -19,7 +21,7 @@ export function Card(props: CardProps) {
       <div
         {...props}
         className={cn(
-          "w-96 shadow-2xl p-4 h-auto bg-[#2B2B2B] border-dashed border border-white/10 aspect-[9/12] rounded-xl"
+          "w-96 shadow-2xl p-4 h-auto bg-[#2B2B2B] border-dashed border border-white/10 aspect-[9/12] rounded-xl",
         )}
       />
     );
@@ -28,21 +30,36 @@ export function Card(props: CardProps) {
     <div
       {...props}
       className={cn(
-        "w-96 shadow-2xl p-4 h-auto bg-[#252525] border-dashed border border-white/20 aspect-[9/12] overflow-hidden rounded-xl"
+        "w-96 shadow-2xl p-4 h-auto bg-[#252525] border-dashed border border-white/20 aspect-[9/12] overflow-hidden rounded-xl",
       )}
     >
-      <Image className="absolute inset-0 h-full object-cover bg-blend-overlay opacity-10 rounded-xl" alt="" src={'/noise2.png'} height={500} width={500}/>
+      <Image
+        className="absolute inset-0 h-full object-cover bg-blend-overlay opacity-10 rounded-xl"
+        alt=""
+        src={"/noise2.png"}
+        height={500}
+        width={500}
+      />
       <h1 className={cn(space_mono.className, "absolute text")}>
         #{pookieData.id.toString().padStart(5, "0")}
       </h1>
-      <div className="rounded-lg  h-[40%] flex items-center justify-center p-24 ">
+      <div className="rounded-lg relative h-[40%] flex items-center justify-center p-24 ">
+        <div
+          style={{ opacity: imageLoaded ? 0 : 1 }}
+          className="absolute w-full h-full flex items-center justify-center"
+        >
+          <SvgSpinners180Ring className="size-10" />
+        </div>
         <Image
-          className="drop-shadow-lg "
+          style={{ opacity: imageLoaded ? 1 : 0 }}
+          onLoad={() => setImageLoaded(true)}
+          className="drop-shadow-lg transition-opacity duration-300 "
           src={`https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${pookieData.id
             .toString()
             .padStart(3, "0")}.png`}
           height={200}
           width={200}
+          quality={0}
           alt=""
         />
       </div>
@@ -50,7 +67,7 @@ export function Card(props: CardProps) {
         <h1
           className={cn(
             "text-2xl capitalize font-bold ",
-            space_grotesk.className
+            space_grotesk.className,
           )}
         >
           {pookieData.name}
@@ -64,9 +81,7 @@ export function Card(props: CardProps) {
           {pookieData.abilities.map((x) => {
             return (
               <Link
-                href={`ability/${
-                  x.ability.url.split("/")[x.ability.url.split("/").length - 2]
-                }`}
+                href={`ability/${x.ability.url.split("/")[x.ability.url.split("/").length - 2]}`}
                 key={x.ability.name}
               >
                 {x.ability.name}
@@ -80,7 +95,7 @@ export function Card(props: CardProps) {
               <p
                 className={cn(
                   "lowercase text-sm text-white/60 mt-2 mb-0.5",
-                  space_grotesk.className
+                  space_grotesk.className,
                 )}
               >
                 {stat.name}
@@ -88,7 +103,7 @@ export function Card(props: CardProps) {
               <p
                 className={cn(
                   "lowercase absolute top-0 right-0 text-xs text-white/20 mt-0.5 ",
-                  space_grotesk.className
+                  space_grotesk.className,
                 )}
               >
                 {base_stat}
