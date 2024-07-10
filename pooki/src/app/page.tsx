@@ -101,7 +101,7 @@ export default function Page() {
               key={x}
             >
               <motion.div
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.3 }}
                 style={{ transformStyle: "preserve-3d" }}
                 className="absolute "
                 initial={
@@ -158,7 +158,7 @@ export default function Page() {
               </motion.div>
 
               <motion.div
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.3 }}
                 className="absolute z-[100]"
                 initial={
                   direction === "r"
@@ -216,7 +216,7 @@ export default function Page() {
               </motion.div>
 
               <motion.div
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.3 }}
                 style={{ transformStyle: "preserve-3d" }}
                 className="absolute "
                 initial={
