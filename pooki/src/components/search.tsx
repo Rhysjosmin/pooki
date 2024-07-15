@@ -123,7 +123,7 @@ function Results({ data, search }: { data: any; search: string }) {
             }
             return i + 1 === parseInt(mainStr);
           }
-          return x.name.includes(search);
+          return x.name.toLowerCase().includes(search.toLowerCase());
         })
         .map((x: { name: string; url: string }) => {
           const id = parseInt(x.url.split("/")[x.url.split("/").length - 2]);
