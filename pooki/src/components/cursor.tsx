@@ -12,7 +12,7 @@ export function Cursor() {
   }>({ x: "80%", y: "50%" });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const [width, setWidth] = useState(0);
-
+  const [opacity, setOpacity] = useState(1);
   const prevPosition = useRef({ x: 0, y: 0 });
   const prevTime = useRef(Date.now());
 
@@ -42,16 +42,27 @@ export function Cursor() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
 
+    // window.addEventListener("mouseleave", (x) => {
+    //   setOpacity(0);
+    // });
+    // window.addEventListener("mouseenter", () => {
+    //   setOpacity(1);
+    // });
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.addEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mouseout", () => {});
+      // window.removeEventListener("mouseleave", () => {});
+
+      window.removeEventListener("mouseenter", () => {});
     };
   }, []);
 
   return (
     <div
       style={{
-        opacity: searchActive ? 0 : 1,
+        opacity: searchActive ? 0 : opacity,
         position: "fixed",
         top: 0,
         left: 0,
