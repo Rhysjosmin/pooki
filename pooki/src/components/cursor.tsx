@@ -6,7 +6,10 @@ import { usePokiStore } from "./state";
 
 export function Cursor() {
   const { searchActive } = usePokiStore();
-  const [position, setPosition] = useState({ x: "80%", y: "50%" });
+  const [position, setPosition] = useState<{
+    x: number | string;
+    y: number | string;
+  }>({ x: "80%", y: "50%" });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const [width, setWidth] = useState(0);
 
@@ -72,7 +75,14 @@ export function Cursor() {
       >
         <MaterialSymbolsArrowCircleRightRounded
           className="transition-all duration-300"
-          style={{ rotate: position.x < width / 2 ? "180deg" : "0deg" }}
+          style={{
+            rotate:
+              typeof position.x === "number"
+                ? position.x < width / 2
+                  ? "180deg"
+                  : "0deg"
+                : "0deg",
+          }}
         />
       </div>
     </div>
