@@ -8,13 +8,19 @@ import { Button } from "./ui/button";
 
 export function SearchBar() {
   // const [searchActive, setSearchActive] = useState(false);
-  const [results, setResults] = useState([1, 1, 2, 46]);
   const [data, setData] = useState();
   const [searchField, setSearchField] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { searchActive, setSearchActive } = usePokiStore();
+  const {
+    searchActive,
+    setSearchActive,
+    setID,
+    searchResults,
+    selectedId,
+    id,
+  } = usePokiStore();
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=1000")
@@ -27,6 +33,18 @@ export function SearchBar() {
         setSearchActive(true);
       } else if (event.key === "Escape") {
         setSearchActive(false);
+      } else if (event.key === "Enter") {
+        if (searchResults === null) {
+          return;
+        }
+        setID(
+          parseInt(
+            searchResults[selectedId].url.split("/")[
+              searchResults[selectedId].url.split("/").length - 2
+            ],
+          ),
+        );
+        setSearchActive(false);
       }
     };
 
@@ -35,7 +53,7 @@ export function SearchBar() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [searchResults, setID, setSearchActive, selectedId, searchActive, id]);
   useEffect(() => {
     if (searchActive && inputRef.current) {
       inputRef.current.focus();
@@ -107,40 +125,52 @@ export function SearchBar() {
 }
 
 function Results({ data, search }: { data: any; search: string }) {
-  const { setID, setSearchActive } = usePokiStore();
-  if (data == null || search == "") {
+  const {
+    setID,
+    setSearchActive,
+    setSearchResults,
+    searchResults,
+    selectedId,
+  } = usePokiStore();
+
+  useEffect(() => {
+    if (data == null || search == "") {
+      return;
+    }
+    setSearchResults(
+      data["results"].filter((x: { name: string; url: string }, i: number) => {
+        if (search.slice(0, 1) === "#") {
+          const mainStr = search.replace("#", "");
+          if (search.includes("-")) {
+            const nums = mainStr.split("-").map((y) => parseInt(y));
+            return i + 2 > nums[0] && i < nums[1];
+          }
+          return i + 1 === parseInt(mainStr);
+        }
+        return x.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    );
+  }, [data, search, setSearchResults]);
+  if (searchResults === null) {
     return <></>;
   }
   return (
     <>
-      {data["results"]
-
-        .filter((x: { name: string; url: string }, i: number) => {
-          if (search.slice(0, 1) === "#") {
-            const mainStr = search.replace("#", "");
-            if (search.includes("-")) {
-              const nums = mainStr.split("-").map((y) => parseInt(y));
-              return i + 2 > nums[0] && i < nums[1];
-            }
-            return i + 1 === parseInt(mainStr);
-          }
-          return x.name.toLowerCase().includes(search.toLowerCase());
-        })
-        .map((x: { name: string; url: string }) => {
-          const id = parseInt(x.url.split("/")[x.url.split("/").length - 2]);
-          return (
-            <Button
-              className="p-2 border-dashed capitalize border border-white/10 hover:border-orange-600/30 bg-neutral-700/50 hover:bg-neutral-600 rounded-xl"
-              key={x.name}
-              onClick={() => {
-                setID(id);
-                setSearchActive(false);
-              }}
-            >
-              {x.name.replace("-", " ")}
-            </Button>
-          );
-        })}
+      {searchResults.map((x: { name: string; url: string }, indx) => {
+        const id = parseInt(x.url.split("/")[x.url.split("/").length - 2]);
+        return (
+          <Button
+            className={`${indx === selectedId ? "border-orange-600/40 bg-neutral-600/80" : "border-white/10 hover:border-orange-600/40 bg-neutral-700/50 hover:bg-neutral-600/80"} p-2 border-dashed capitalize border   rounded-xl`}
+            key={x.name}
+            onClick={() => {
+              setID(id);
+              setSearchActive(false);
+            }}
+          >
+            {x.name.replace("-", " ")}
+          </Button>
+        );
+      })}
     </>
   );
 }

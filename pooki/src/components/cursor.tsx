@@ -42,20 +42,9 @@ export function Cursor() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
 
-    // window.addEventListener("mouseleave", (x) => {
-    //   setOpacity(0);
-    // });
-    // window.addEventListener("mouseenter", () => {
-    //   setOpacity(1);
-    // });
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mouseout", () => {});
-      // window.removeEventListener("mouseleave", () => {});
-
-      window.removeEventListener("mouseenter", () => {});
     };
   }, []);
 

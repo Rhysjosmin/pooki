@@ -40,10 +40,6 @@ export default function Page() {
     if (pokemons === null) {
       return;
     }
-    // if (Object.keys(pokemons).length > 3) {
-    // updateDB(id - 1);
-    // updateDB(id);
-    // updateDB(id + 1);
 
     [-1, 0, 1].forEach((x) => {
       if (!Object.keys(pokemons).includes((id + x).toString())) {
@@ -54,6 +50,24 @@ export default function Page() {
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight" || event.key === "d") {
+        setDirection("r");
+        setID(Math.min(id + 1, 1000));
+      } else if (event.key === "ArrowLeft" || event.key === "a") {
+        setDirection("l");
+        setID(Math.max(id - 1, 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [id, setID]);
 
   if (pokemons == null) {
     return <></>;

@@ -12,6 +12,10 @@ export interface storeType {
   setID: (x: number) => void;
   searchActive: boolean;
   setSearchActive: (x: boolean) => void;
+  selectedId: number;
+  setSelectedId: (x: number) => void;
+  searchResults: null | Array<{ name: string; url: string }>;
+  setSearchResults: (x: Array<{ name: string; url: string }>) => void;
   //   pokemons: {
   //     [id: number]: PokemonDType;
   //   } | null;
@@ -28,4 +32,8 @@ export const usePokiStore = create<storeType>((set) => ({
   setID: (x) => set({ id: x }),
   searchActive: false,
   setSearchActive: (x) => set({ searchActive: x }),
+  selectedId: 0,
+  setSelectedId: (x) => set({ selectedId: x }),
+  searchResults: null,
+  setSearchResults: (x) => set({ searchResults: x }),
 }));
