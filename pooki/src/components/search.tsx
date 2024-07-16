@@ -44,9 +44,10 @@ export function SearchBar() {
   return (
     <>
       <p
+        onClick={() => setSearchActive(true)}
         className={cn(
           space_mono.className,
-          "absolute  bottom-2 left-2 text-xs text-white/40",
+          "absolute  bottom-2 z-100 left-2 text-xs text-white/40",
         )}
       >
         <span className="inline-block px-1 py-0.5 bg-white/10 rounded">

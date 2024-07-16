@@ -6,7 +6,7 @@ import { usePokiStore } from "./state";
 
 export function Cursor() {
   const { searchActive } = usePokiStore();
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: "80%", y: "50%" });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const [width, setWidth] = useState(0);
 

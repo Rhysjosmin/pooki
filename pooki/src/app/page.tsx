@@ -92,7 +92,7 @@ export default function Page() {
           className="w-full h-full bg-white/10 "
         />
       </div>
-      <AnimatePresence mode="sync">
+      <AnimatePresence initial={false} mode="sync">
         {Object.keys(pokemons)
           .filter((key) => Number.parseInt(key) === id)
           .map((x) => (
