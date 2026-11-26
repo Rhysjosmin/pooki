@@ -56,7 +56,7 @@ export function Card(props: CardProps) {
           className="drop-shadow-lg transition-opacity duration-300 "
           src={`https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${pookieData.id
             .toString()
-            .padStart(3, "0")}.png`}
+            .padStart(4, "0")}.png`}
           height={200}
           width={200}
           quality={0}
